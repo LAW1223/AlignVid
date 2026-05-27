@@ -3,24 +3,233 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Video Comparisons</title>
+  <title>AlignVid: Training-Free Attention Modulation for Text-guided Image-to-Video Generation (ICML 2026)</title>
+  <meta name="description" content="Official project page for AlignVid (ICML 2026): a training-free method that improves prompt adherence in text-guided image-to-video generation by re-balancing internal attention. Includes the OmitI2V benchmark.">
+
+  <!-- Open Graph / Twitter -->
+  <meta property="og:title" content="AlignVid (ICML 2026)">
+  <meta property="og:description" content="Training-free attention modulation for text-guided image-to-video generation. Validated on FramePack, FramePack-F1, and Wan2.1.">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="static/images/teaser.png">
+  <meta name="twitter:card" content="summary_large_image">
 
   <link rel="stylesheet" href="static/css/bulma.min.css">
-
-  <style>
-    html, body { background: #fff; }
-    body { margin: 0; padding: 0; }
-    .box { border-radius: 10px; }
-    video { max-width: 100%; height: auto; }
-  </style>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.2/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="static/css/style.css">
 
   <script defer src="static/js/demos.js"></script>
 </head>
+
 <body>
-<section class="section">
-  <div class="container is-max-desktop">
-    <div id="video-comparisons"></div>
+
+<!-- ====================== HERO ====================== -->
+<section class="hero is-publication">
+  <div class="hero-body">
+    <div class="container is-max-desktop has-text-centered">
+      <p class="venue-tag">ICML&nbsp;2026</p>
+
+      <h1 class="title is-2 publication-title">
+        AlignVid: Taming Visual Dominance via Training-Free<br>
+        Attention Modulation in Text-guided Image-to-Video Generation
+      </h1>
+
+      <div class="authors">
+        <span class="author">Yexin Liu<sup>1</sup></span>&nbsp;·
+        <span class="author">Wenjie Shu<sup>2</sup></span>&nbsp;·
+        <span class="author">Zile Huang<sup>3</sup></span>&nbsp;·
+        <span class="author">Haoze Zheng<sup>1</sup></span><br>
+        <span class="author">Yueze Wang<sup>4</sup></span>&nbsp;·
+        <span class="author">Manyuan Zhang<sup>5</sup></span>&nbsp;·
+        <span class="author">Sernam Lim<sup>3</sup></span>&nbsp;·
+        <span class="author">Harry Yang<sup>1,&dagger;</sup></span>
+      </div>
+
+      <p class="affiliations">
+        <sup>1</sup>HKUST<span class="sep">·</span>
+        <sup>2</sup>ZODA<span class="sep">·</span>
+        <sup>3</sup>UCF<span class="sep">·</span>
+        <sup>4</sup>BAAI<span class="sep">·</span>
+        <sup>5</sup>CUHK
+        <br><small><sup>&dagger;</sup>Corresponding author</small>
+      </p>
+
+      <div class="buttons is-centered publication-buttons">
+        <a class="button" href="https://arxiv.org/abs/2512.01334" target="_blank" rel="noopener">
+          <span class="icon"><i class="fa-solid fa-file-pdf"></i></span><span>Paper</span>
+        </a>
+        <a class="button" href="https://arxiv.org/abs/2512.01334" target="_blank" rel="noopener">
+          <span class="icon"><i class="fa-solid fa-book"></i></span><span>arXiv</span>
+        </a>
+        <a class="button" href="https://github.com/LAW1223/AlignVid" target="_blank" rel="noopener">
+          <span class="icon"><i class="fa-brands fa-github"></i></span><span>Code</span>
+        </a>
+        <a class="button" href="https://huggingface.co/datasets/AIPeanutman/OmitI2V" target="_blank" rel="noopener">
+          <span class="icon">🤗</span><span>OmitI2V Benchmark</span>
+        </a>
+      </div>
+    </div>
   </div>
 </section>
+
+<!-- ====================== TEASER ====================== -->
+<section class="section">
+  <div class="container is-max-desktop has-text-centered">
+    <img src="static/images/teaser.png" alt="Teaser figure: baseline failure modes corrected by AlignVid" class="figure">
+    <p class="caption">
+      Baseline text-guided image-to-video models (here, FramePack) exhibit
+      <em>semantic negligence</em> — failing to realize prompt-specified edits.
+      In <strong>(a)</strong>, the sunflower mentioned in the prompt is entirely missing.
+      In <strong>(b)</strong>, the person remains static instead of climbing onto the tank as instructed.
+      AlignVid corrects both, without any retraining.
+    </p>
+  </div>
+</section>
+
+<!-- ====================== HIGHLIGHTS ====================== -->
+<section class="section" style="padding-top:0;">
+  <div class="container is-max-desktop">
+    <div class="highlights">
+      <span class="pill"><strong>Training-free</strong> · plug-and-play</span>
+      <span class="pill">No fine-tuning · no extra weights</span>
+      <span class="pill"><strong>&lt;0.1%</strong> inference overhead</span>
+      <span class="pill">3 backbones: FramePack · FramePack-F1 · Wan2.1</span>
+      <span class="pill">OmitI2V · <strong>367</strong> human-annotated samples</span>
+    </div>
+  </div>
+</section>
+
+<!-- ====================== ABSTRACT ====================== -->
+<section class="section has-background-soft">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3">Abstract</h2>
+    <div class="abstract content has-text-justified">
+      <p>
+        Text-guided image-to-video generation has made substantial progress, yet it still struggles to execute text-specified edits that require substantial changes to a reference image (<em>e.g.</em>, object addition, removal, or modification). Empirically, our analysis reveals that this stems from
+        <strong>visual dominance</strong>, where the reference image causes severe attention dispersion, inhibiting the model's ability to incorporate new semantic information.
+        To address this, we propose <strong>AlignVid</strong>, a training-free intervention that re-calibrates the model's internal attention distribution. Drawing on an energy-based perspective of attention, AlignVid employs <strong>Attention Scaling Modulation (ASM)</strong> to reduce attention entropy and concentrate focus on semantic tokens, alongside <strong>Guidance Scheduling (GS)</strong> to maintain generation stability.
+        To rigorously assess this capability, we present <strong>OmitI2V</strong>, a comprehensive benchmark for evaluating prompt adherence across object modification, addition, and deletion. Extensive experiments demonstrate that AlignVid effectively enhances semantic fidelity with negligible computational overhead.
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ====================== METHOD ====================== -->
+<section class="section">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3">Method</h2>
+    <p class="content has-text-centered" style="max-width:780px;margin:0 auto 1.5rem;">
+      AlignVid recalibrates attention <em>inside</em> the model — no fine-tuning, no extra parameters, negligible inference overhead. It has two complementary components:
+    </p>
+
+    <div class="columns">
+      <div class="column is-6">
+        <div class="method-card">
+          <span class="badge">ASM</span>
+          <h4 class="title is-5">Attention Scaling Modulation</h4>
+          <p>
+            Rescales query/key representations by a single coefficient <strong>γ</strong> (default <strong>1.35</strong>) to <em>sharpen</em> the attention energy landscape — lowering entropy and amplifying text tokens over visual priors.
+          </p>
+        </div>
+      </div>
+      <div class="column is-6">
+        <div class="method-card">
+          <span class="badge">GS</span>
+          <h4 class="title is-5">Guidance Scheduling</h4>
+          <p>
+            Applies ASM <em>selectively</em> across foreground-sensitive transformer blocks and early denoising steps, stabilizing generation and limiting visual-quality degradation.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <p class="content has-text-justified" style="margin-top:1.5rem;">
+      Unlike input-level perturbations such as blurring — which visibly corrupt the reference image — AlignVid performs this reallocation entirely within the model, giving a <strong>tunable semantic–quality trade-off without input-level corruption</strong>. The default coefficient γ = 1.35 transfers across backbones without per-model search (analogous to choosing CFG strength).
+    </p>
+
+    <h3 class="title is-4 subhead">Pilot study: blurring the input "purifies" attention</h3>
+    <img src="static/images/pilot.png" alt="Pilot study: original vs. blurred input attention" class="figure">
+    <p class="caption">
+      Videos and attention maps generated from the original input image (top) and from the same image after Gaussian blur (bottom).
+      In the original setting the model exhibits <em>visual dominance</em> — excessive focus on the reference image suppresses text constraints and temporal dynamics.
+      Blurring weakens this dominance, shifting attention toward text tokens and temporal neighbors, increasing attention scores, and lowering entropy across all modalities.
+      AlignVid mimics this sharpening effect <em>internally</em>, with no input corruption.
+    </p>
+
+    <h3 class="title is-4 subhead">Attention analysis</h3>
+    <img src="static/images/attention.png" alt="Attention analysis: ASM sharpens attention" class="figure">
+    <p class="caption">
+      ASM sharpens attention (lower entropy), boosts focus on text tokens, and suppresses the dominant image regions — exactly the effect blurring achieves at the input, but realized inside the model.
+    </p>
+  </div>
+</section>
+
+<!-- ====================== VIDEO COMPARISONS ====================== -->
+<section class="section has-background-soft">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3">Video Comparisons</h2>
+    <p class="content has-text-centered">
+      Baseline vs. <strong>AlignVid (ours)</strong> across three text-guided image-to-video backbones.
+    </p>
+  </div>
+  <div id="video-comparisons"></div>
+</section>
+
+<!-- ====================== BENCHMARK ====================== -->
+<section class="section">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3">OmitI2V Benchmark</h2>
+    <p class="content has-text-justified" style="max-width:820px;margin:0 auto 1.5rem;">
+      <strong>OmitI2V</strong> is a new benchmark of <strong>367 human-annotated samples</strong> spanning
+      <em>modification</em>, <em>addition</em>, and <em>deletion</em> scenarios. Each sample ships with
+      VQA-style yes/no questions for fine-grained edit compliance.
+    </p>
+    <div class="columns is-vcentered">
+      <div class="column is-6 has-text-centered">
+        <img src="static/images/benchmark.png" alt="OmitI2V distribution" class="figure">
+        <p class="caption">Sample distribution across categories and domains.</p>
+      </div>
+      <div class="column is-6 has-text-centered">
+        <img src="static/images/benchmark_sample.jpg" alt="OmitI2V sample" class="figure">
+        <p class="caption">An OmitI2V sample, with its reference image and prompt-specified edit.</p>
+      </div>
+    </div>
+    <p class="has-text-centered" style="margin-top:1.2rem;">
+      <a class="button is-large" style="background:var(--ink);color:#fff;border:none;border-radius:999px;padding:0 1.4rem;" href="https://huggingface.co/datasets/AIPeanutman/OmitI2V" target="_blank" rel="noopener">
+        <span class="icon">🤗</span><span>Download OmitI2V on Hugging Face</span>
+      </a>
+    </p>
+  </div>
+</section>
+
+<!-- ====================== BIBTEX ====================== -->
+<section class="section has-background-soft">
+  <div class="container is-max-desktop">
+    <h2 class="title is-3">BibTeX</h2>
+<pre class="bibtex">@article{liu2025alignvid,
+  title   = {AlignVid: Training-Free Attention Scaling for Semantic Fidelity in Text-Guided Image-to-Video Generation},
+  author  = {Liu, Yexin and Shu, Wen-Jie and Huang, Zile and Zheng, Haoze and Wang, Yueze and Zhang, Manyuan and Lim, Ser-Nam and Yang, Harry},
+  journal = {arXiv preprint arXiv:2512.01334},
+  year    = {2025}
+}</pre>
+  </div>
+</section>
+
+<!-- ====================== FOOTER ====================== -->
+<footer class="footer">
+  <div class="container is-max-desktop has-text-centered">
+    <p>
+      Page template adapted from <a href="https://nerfies.github.io/" target="_blank" rel="noopener">Nerfies</a>.
+      This work builds on
+      <a href="https://github.com/Wan-Video/Wan2.1" target="_blank" rel="noopener">Wan2.1</a>,
+      <a href="https://github.com/lllyasviel/FramePack" target="_blank" rel="noopener">FramePack</a>, and
+      <a href="https://github.com/Vchitect/VBench" target="_blank" rel="noopener">VBench</a>.
+      Please follow their licenses as well.
+    </p>
+  </div>
+</footer>
+
 </body>
 </html>
