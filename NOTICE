@@ -1,0 +1,31 @@
+AlignVid
+Copyright 2026 The AlignVid Authors
+
+This product includes software developed by The AlignVid Authors,
+released under the Apache License, Version 2.0.
+
+------------------------------------------------------------------------
+Third-party components
+------------------------------------------------------------------------
+
+This repository contains modified forks of, and integrations with, the
+following third-party projects. These components remain subject to their
+respective original licenses; see the LICENSE / LICENSE.txt files inside
+the corresponding directories.
+
+* Wan2.1  (models/Wan2.1/)
+    https://github.com/Wan-Video/Wan2.1
+    See models/Wan2.1/LICENSE.txt
+
+* FramePack  (models/FramePack/)
+    https://github.com/lllyasviel/FramePack
+    See models/FramePack/LICENSE
+
+The AlignVid modifications to these forks (attention-scaling hooks and
+JSON-driven generation scripts) are marked as changed and are provided
+under the Apache-2.0 License of this repository.
+
+The following projects are used for evaluation but are NOT redistributed
+here; install them from their upstream sources:
+
+* VBench            https://github.com/Vchitect/VBench

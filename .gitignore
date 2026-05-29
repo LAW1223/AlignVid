@@ -1,0 +1,42 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+.eggs/
+.ipynb_checkpoints/
+.venv/
+venv/
+env/
+
+# Model weights / checkpoints (download separately, see README)
+*.pth
+*.pt
+*.ckpt
+*.safetensors
+*.bin
+*.onnx
+
+# Generated outputs / results (regenerable)
+results/
+outputs/
+output_*/
+*_Results/
+temp_resized_videos/
+visualization*/
+*.log
+output_*.log
+
+# Large media that should not live in git (keep curated demos under project_page/)
+# *.mp4
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
